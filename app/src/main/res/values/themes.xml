@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme for Wear OS -->
+    <style name="Theme.ProPhysioWearApp" parent="@android:style/Theme.DeviceDefault" />
+    
+    <!-- Splash Screen theme -->
+    <style name="Theme.SplashScreen" parent="Theme.SplashScreen.Base">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.ProPhysioWearApp</item>
+    </style>
+    
+    <!-- Base SplashScreen theme -->
+    <style name="Theme.SplashScreen.Base" parent="Theme.ProPhysioWearApp">
+        <item name="android:windowBackground">@color/splash_background</item>
+    </style>
+</resources>
