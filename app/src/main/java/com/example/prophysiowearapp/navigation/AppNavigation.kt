@@ -4,35 +4,52 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.prophysiowearapp.ui.screens.AppointmentListScreen
-import com.example.prophysiowearapp.ui.screens.ConfirmedAppointmentScreen
-import com.example.prophysiowearapp.ui.screens.ReminderScreen
-import com.example.prophysiowearapp.ui.screens.CanceledAppointmentScreen
+import com.example.prophysiowearapp.ui.screens.AboutScreen
+import com.example.prophysiowearapp.ui.screens.MainMenuScreen
+import com.example.prophysiowearapp.ui.screens.ScheduleScreen
+import com.example.prophysiowearapp.ui.screens.ServiceDetailScreen
+import com.example.prophysiowearapp.ui.screens.ServicesScreen
 
 sealed class Screen(val route: String) {
-    object AppointmentList : Screen("appointment_list")
-    object ConfirmedAppointment : Screen("confirmed_appointment")
-    object Reminder : Screen("reminder")
-    object CanceledAppointment : Screen("canceled_appointment")
+    object MainMenu : Screen("main_menu")
+    object About : Screen("about")
+    object Schedule : Screen("schedule")
+    object Services : Screen("services")
+    object ServiceDetail : Screen("service_detail/{serviceName}/{serviceDescription}/{servicePrice}") {
+        fun createRoute(serviceName: String, serviceDescription: String, servicePrice: String) =
+            "service_detail/$serviceName/$serviceDescription/$servicePrice"
+    }
 }
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.AppointmentList.route
+        startDestination = Screen.MainMenu.route
     ) {
-        composable(Screen.AppointmentList.route) {
-            AppointmentListScreen(navController = navController)
+        composable(Screen.MainMenu.route) {
+            MainMenuScreen(navController = navController)
         }
-        composable(Screen.ConfirmedAppointment.route) {
-            ConfirmedAppointmentScreen(navController = navController)
+        composable(Screen.About.route) {
+            AboutScreen(navController = navController)
         }
-        composable(Screen.Reminder.route) {
-            ReminderScreen(navController = navController)
+        composable(Screen.Schedule.route) {
+            ScheduleScreen(navController = navController)
         }
-        composable(Screen.CanceledAppointment.route) {
-            CanceledAppointmentScreen(navController = navController)
+        composable(Screen.Services.route) {
+            ServicesScreen(navController = navController)
+        }
+        composable(Screen.ServiceDetail.route) { backStackEntry ->
+            val serviceName = backStackEntry.arguments?.getString("serviceName") ?: ""
+            val serviceDescription = backStackEntry.arguments?.getString("serviceDescription") ?: ""
+            val servicePrice = backStackEntry.arguments?.getString("servicePrice") ?: ""
+
+            ServiceDetailScreen(
+                navController = navController,
+                serviceName = serviceName,
+                serviceDescription = serviceDescription,
+                servicePrice = servicePrice
+            )
         }
     }
 }
